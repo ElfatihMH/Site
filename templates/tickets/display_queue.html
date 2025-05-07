@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">قائمة انتظار التذاكر</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>اسم العميل</th>
+                <th>نوع الخدمة</th>
+                <th>الحالة</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.customer_name }}</td>
+                <td>{{ ticket.service_type }}</td>
+                <td>{{ ticket.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      <div class="card shadow rounded-4 border-0">
+        <div class="card-header text-center bg-primary text-white rounded-top-4">
+          <h3 class="mb-0">{{ subscription.name }}</h3>
+        </div>
+        <div class="card-body p-4">
+          <div class="row g-3">
+
+            <!-- البريد والهاتف -->
+            <div class="col-md-6">
+              <div class="border p-3 rounded shadow-sm bg-light">
+                <strong>البريد الإلكتروني</strong>
+                <div>{{ subscription.email }}</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="border p-3 rounded shadow-sm bg-light">
+                <strong>رقم الهاتف</strong>
+                <div>{{ subscription.phone }}</div>
+              </div>
+            </div>
+
+            <hr class="mt-4">
+
+            <!-- المبالغ -->
+            <div class="col-md-4">
+              <div class="border p-3 rounded shadow-sm bg-light">
+                <strong>المبلغ الكلي</strong>
+                <div>{{ subscription.amount }} د.ل</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="border p-3 rounded shadow-sm bg-light">
+                <strong>المدفوع</strong>
+                <div>{{ subscription.paid }} د.ل</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="border p-3 rounded shadow-sm bg-light">
+                <strong>المتبقي</strong>
+                <div>{{ subscription.remaining_amount }} د.ل</div>
+              </div>
+            </div>
+
+            <hr class="mt-4">
+
+            <!-- التواريخ -->
+            <div class="col-md-6">
+              <div class="border p-3 rounded shadow-sm bg-light">
+                <strong>تاريخ الاشتراك</strong>
+                <div>{{ subscription.start_date.strftime('%Y-%m-%d') }}</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="border p-3 rounded shadow-sm bg-light">
+                <strong>تاريخ السداد التالي</strong>
+                <div>{{ subscription.next_payment_date.strftime('%Y-%m-%d') }}</div>
+              </div>
+            </div>
+
+            <hr class="mt-4">
+
+            <!-- تفاصيل الاشتراك -->
+            <div class="col-12">
+              <div class="border p-3 rounded shadow-sm bg-light">
+                <strong>تفاصيل الاشتراك</strong>
+                <div class="text-muted">{{ subscription.details or 'لا توجد تفاصيل' }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="{{ url_for('print_receipt', subscription_id=subscription.id) }}" class="btn btn-secondary" target="_blank">طباعة الإيصال</a>
+
+        <div class="card-footer text-center bg-white">
+          <a href="{{ url_for('list_subscriptions') }}" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left-circle"></i> الرجوع إلى القائمة
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

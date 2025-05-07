@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}تعديل اشتراك{% endblock %}
+
+{% block content %}
+<h1 class="text-center mb-4">تعديل الاشتراك</h1>
+
+<form method="POST" action="{{ url_for('edit_subscription', id=subscription.id) }}">
+  {{ form.hidden_tag() }}
+  
+  <div class="mb-3">
+    <label for="name" class="form-label">الاسم</label>
+    {{ form.name(class="form-control") }}
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">البريد الإلكتروني</label>
+    {{ form.email(class="form-control") }}
+  </div>
+  <div class="mb-3">
+    <label for="phone" class="form-label">رقم الهاتف</label>
+    {{ form.phone(class="form-control") }}
+  </div>
+  <div class="mb-3">
+    <label for="subscription_type" class="form-label">نوع الاشتراك</label>
+    {{ form.subscription_type(class="form-select") }}
+  </div>
+  <div class="mb-3">
+    {{ form.details.label(class="form-label") }}
+    {{ form.details(class="form-control", rows="3") }}
+  </div>
+  
+  <div class="mb-3">
+    <label for="amount" class="form-label">المبلغ المستحق</label>
+    {{ form.amount(class="form-control", id="amount") }}
+  </div>
+  <div class="mb-3">
+    <label for="paid" class="form-label">المبلغ المدفوع</label>
+    {{ form.paid(class="form-control", id="paid") }}
+  </div>
+  <div class="mb-3">
+    <label for="remaining_amount" class="form-label">المبلغ المتبقي</label>
+    <input type="text" class="form-control" id="remaining_amount" value="{{ subscription.remaining_amount }}" readonly="readonly" />
+  </div>
+  
+  <button type="submit" class="btn btn-primary">تعديل الاشتراك</button>
+</form>
+
+<script>
+  // دالة لحساب المبلغ المتبقي ديناميكياً
+  function updateRemainingAmount() {
+    var amount = parseFloat(document.getElementById('amount').value) || 0;
+    var paid = parseFloat(document.getElementById('paid').value) || 0;
+    var remainingAmount = amount - paid;
+    
+    // التأكد من أن المبلغ المتبقي لا يكون سالبًا
+    if (remainingAmount < 0) {
+      remainingAmount = 0;
+    }
+
+    // تحديث حقل المبلغ المتبقي
+    document.getElementById('remaining_amount').value = remainingAmount.toFixed(2);
+  }
+
+  // تحديث المبلغ المتبقي عند تغيير أي من المبالغ
+  document.getElementById('amount').addEventListener('input', updateRemainingAmount);
+  document.getElementById('paid').addEventListener('input', updateRemainingAmount);
+
+  // استدعاء الدالة أول مرة لتحميل المبلغ المتبقي عند تحميل الصفحة
+  updateRemainingAmount();
+</script>
+<a href="{{ url_for('print_receipt', subscription_id=subscription.id) }}" class="btn btn-secondary" target="_blank">طباعة الإيصال</a>
+
+{% endblock %}

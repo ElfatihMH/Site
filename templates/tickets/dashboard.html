@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">لوحة تحكم التذاكر</h1>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">إجمالي التذاكر</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ total }}</h5>
+                    <p class="card-text">إجمالي التذاكر في النظام.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-header">التذاكر قيد الانتظار</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ waiting }}</h5>
+                    <p class="card-text">التذاكر التي لم يتم معالجتها بعد.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">التذاكر قيد المعالجة</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ serving }}</h5>
+                    <p class="card-text">التذاكر التي يتم معالجتها الآن.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-secondary mb-3">
+                <div class="card-header">التذاكر المكتملة</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ done }}</h5>
+                    <p class="card-text">التذاكر التي تم الانتهاء منها.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

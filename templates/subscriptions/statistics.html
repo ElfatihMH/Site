@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- داخل content -->
+<form class="row g-3 mb-4" method="get" action="{{ url_for('subscription_statistics') }}">
+    <div class="col-md-4">
+        <select name="type" class="form-select">
+            <option value="">نوع الاشتراك (الكل)</option>
+            <option value="شهري" {% if subscription_type == 'شهري' %}selected{% endif %}>شهري</option>
+            <option value="سنوي" {% if subscription_type == 'سنوي' %}selected{% endif %}>سنوي</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <select name="period" class="form-select">
+            <option value="">الفترة الزمنية (الكل)</option>
+            <option value="30" {% if period == '30' %}selected{% endif %}>آخر 30 يوم</option>
+            <option value="90" {% if period == '90' %}selected{% endif %}>آخر 90 يوم</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-primary w-100">تصفية</button>
+    </div>
+</form>
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">لوحة التحكم والإحصائيات</h2>
+
+    <div class="row text-center mb-4">
+        <div class="col-md-3"><div class="alert alert-primary">إجمالي الاشتراكات: {{ total }}</div></div>
+        <div class="col-md-3"><div class="alert alert-success">نشطة: {{ active }}</div></div>
+        <div class="col-md-3"><div class="alert alert-warning">اقترب السداد: {{ due_soon }}</div></div>
+        <div class="col-md-3"><div class="alert alert-danger">انتهت: {{ expired }}</div></div>
+    </div>
+
+    <div class="row text-center mb-4">
+        <div class="col-md-6"><div class="alert alert-info">المبالغ المدفوعة: {{ total_paid }} د.ل</div></div>
+        <div class="col-md-6"><div class="alert alert-secondary">المبالغ المتبقية: {{ total_remaining }} د.ل</div></div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <canvas id="statusChart" height="250"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('statusChart').getContext('2d');
+new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ['نشطة', 'اقترب السداد', 'انتهت'],
+        datasets: [{
+            data: [{{ active }}, {{ due_soon }}, {{ expired }}],
+            backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
+            borderWidth: 5,
+            hoverOffset: 10
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    font: {
+                        size: 14,
+                        family: 'Arial, sans-serif',
+                        weight: 'bold'
+                    }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return tooltipItem.label + ': ' + tooltipItem.raw + ' اشتراك';
+                    }
+                }
+            }
+        },
+        layout: {
+            padding: {
+                top: 10,
+                bottom: 10
+            }
+        },
+        animation: {
+            animateRotate: true,
+            animateScale: true
+        }
+    }
+});
+</script>
+{% endblock %}

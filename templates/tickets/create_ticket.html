@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">إضافة تذكرة جديدة</h2>
+    <form method="POST" action="{{ url_for('tickets.create_ticket') }}">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            {{ form.customer_name.label(class="form-label") }}
+            {{ form.customer_name(class="form-control", placeholder="اسم العميل") }}
+        </div>
+        <div class="mb-3">
+            {{ form.service_type.label(class="form-label") }}
+            {{ form.service_type(class="form-select") }}
+        </div>
+        <div class="text-center">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+</div>
+{% endblock %}
